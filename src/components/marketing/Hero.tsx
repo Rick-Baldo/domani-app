@@ -52,7 +52,7 @@ export default function Hero() {
 
           {/* H1 */}
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-8">
-            IA aplicada à experiência
+            A Inteligência Artificial que escala sua experiência
             <br />
             e crescimento{' '}
             <span className="text-domani-orange">comercial</span>

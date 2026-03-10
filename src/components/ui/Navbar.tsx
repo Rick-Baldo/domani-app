@@ -52,7 +52,7 @@ export default function Navbar() {
           "
         >
           <span className="w-1.5 h-1.5 rounded-full bg-domani-orange animate-pulse" />
-          Falar com especialista
+          Escalar meu atendimento agora
         </a>
       </div>
     </motion.header>
