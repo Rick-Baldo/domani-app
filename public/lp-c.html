@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Domani.AI — Um Squad que Pensa Junto com Você</title>
+  <meta name="description" content="Você já tentou IA. Não funcionou porque era ferramenta, não Squad. A Domani.AI entrega uma Célula de Inteligência Comercial." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ─── DESIGN TOKENS (idênticos ao chassi aprovado) ──────────── */
+    :root {
+      --bg-0:        #080808;
+      --bg-1:        #0f0f0f;
+      --bg-2:        #161616;
+      --bg-3:        #1e1e1e;
+      --border:      rgba(255,255,255,0.08);
+      --border-hot:  rgba(255,85,0,0.35);
+      --accent:      #FF5500;
+      --accent-dim:  #cc4400;
+      --accent-glow: rgba(255,85,0,0.18);
+      --text-1:      #ffffff;
+      --text-2:      #c0c0c0;
+      --text-3:      #777777;
+      --tag-bg:      rgba(255,85,0,0.1);
+      --tag-border:  rgba(255,85,0,0.3);
+      --radius-sm:   6px;
+      --radius-md:   12px;
+      --radius-lg:   20px;
+      --font:        'Inter', -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--bg-0);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── UTILITIES ──────────────────────────────────────────────── */
+    .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase;
+      color: var(--accent); background: rgba(18,8,2,0.92);
+      border: 1.5px solid rgba(255,85,0,0.55); padding: 8px 20px; border-radius: 999px;
+      box-shadow: 0 0 16px rgba(255,85,0,0.08), inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .tag::before { content: ''; display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 6px var(--accent); flex-shrink: 0; }
+    .section { padding: 100px 0; }
+    .section-header { text-align: center; margin-bottom: 64px; }
+    .section-header .tag { margin-bottom: 20px; }
+    .section-header h2 {
+      font-size: clamp(30px, 4vw, 50px); font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+    .section-header h2 em { font-style: normal; color: var(--accent); }
+    .section-header p {
+      margin-top: 16px; font-size: 17px; color: var(--text-2); line-height: 1.7;
+      max-width: 620px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ─── NOISE ──────────────────────────────────────────────────── */
+    body::before {
+      content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: #080808;
+      padding: 14px 0;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    /* Logo */
+    .nav-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 19px; font-weight: 800; letter-spacing: -0.04em;
+      color: #ffffff; text-decoration: none;
+    }
+    .nav-logo-mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 9px; flex-shrink: 0;
+      background: rgba(255,85,0,0.12); border: 1px solid rgba(255,85,0,0.3);
+      color: #FF5500; font-size: 18px; font-weight: 900; line-height: 1;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .nav-logo:hover .nav-logo-mark { background: rgba(255,85,0,0.2); border-color: rgba(255,85,0,0.6); }
+    .nav-logo-text { color: #ffffff; }
+    .nav-logo-text span { color: #FF5500; }
+    /* CTA */
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 9px;
+      background: transparent; color: #FF5500;
+      border: 1.5px solid rgba(255,85,0,0.55); padding: 10px 24px;
+      border-radius: 999px; font-size: 13px; font-weight: 600;
+      letter-spacing: 0.02em; text-decoration: none; min-height: 44px;
+      touch-action: manipulation;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .nav-cta::before {
+      content: ''; display: block; width: 7px; height: 7px; border-radius: 50%;
+      background: #FF5500; box-shadow: 0 0 6px #FF5500; flex-shrink: 0;
+    }
+    .nav-cta:hover {
+      border-color: #FF5500; background: rgba(255,85,0,0.08);
+      box-shadow: 0 0 20px rgba(255,85,0,0.2);
+    }
+
+    /* ─── HERO ────────────────────────────────────────────────────── */
+    /* LP-B: copy de Squad. Estrutura idêntica à LP-A. */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; align-items: center;
+      padding-top: 80px; overflow: hidden;
+    }
+    .hero-glow { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+    /* Glow principal — núcleo brilhante direita */
+    .hero-glow::before {
+      content: ''; position: absolute; width: 1000px; height: 1000px;
+      top: 50%; right: -180px; transform: translateY(-50%);
+      background: radial-gradient(circle,
+        rgba(255,100,0,0.38) 0%,
+        rgba(255,85,0,0.20) 25%,
+        rgba(255,60,0,0.08) 50%,
+        transparent 70%);
+      border-radius: 50%; animation: pulse 5s ease-in-out infinite;
+    }
+    /* Glow secundário — brilho quente difuso */
+    .hero-glow::after {
+      content: ''; position: absolute; width: 700px; height: 700px;
+      top: 50%; right: 5%; transform: translateY(-50%);
+      background: radial-gradient(circle,
+        rgba(255,140,0,0.28) 0%,
+        rgba(255,85,0,0.12) 35%,
+        transparent 65%);
+      border-radius: 50%; animation: pulse 7s ease-in-out infinite reverse;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: translateY(-50%) scale(1);   opacity: 1; }
+      50%       { transform: translateY(-50%) scale(1.1); opacity: 0.75; }
+    }
+    /* Circuit board grid — padrão tech */
+    .hero-grid {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(255,85,0,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,85,0,0.07) 1px, transparent 1px),
+        linear-gradient(45deg,  rgba(255,85,0,0.025) 1px, transparent 1px),
+        linear-gradient(-45deg, rgba(255,85,0,0.025) 1px, transparent 1px);
+      background-size: 52px 52px, 52px 52px, 104px 104px, 104px 104px;
+      mask-image: radial-gradient(ellipse 95% 95% at 68% 50%, black 15%, rgba(0,0,0,0.5) 50%, transparent 80%);
+    }
+    /* Anel de pulso adicional */
+    .hero-pulse-ring {
+      position: absolute; z-index: 0; pointer-events: none;
+      top: 50%; right: 18%; transform: translate(50%, -50%);
+      width: 500px; height: 500px; border-radius: 50%;
+      border: 1px solid rgba(255,85,0,0.12);
+      animation: ringPulseOuter 4s ease-out infinite;
+    }
+    .hero-pulse-ring::before {
+      content: ''; position: absolute; inset: -60px; border-radius: 50%;
+      border: 1px solid rgba(255,85,0,0.07);
+      animation: ringPulse 4s ease-out infinite 1.3s;
+    }
+    .hero-pulse-ring::after {
+      content: ''; position: absolute; inset: -120px; border-radius: 50%;
+      border: 1px solid rgba(255,85,0,0.04);
+      animation: ringPulse 4s ease-out infinite 2.6s;
+    }
+    /* ringPulse: para pseudo-elementos (sem translate base) */
+    @keyframes ringPulse {
+      0%   { opacity: 0.9; transform: scale(0.92); }
+      100% { opacity: 0;   transform: scale(1.18); }
+    }
+    /* ringPulseOuter: para o anel principal (preserva translate base) */
+    @keyframes ringPulseOuter {
+      0%   { opacity: 0.9; transform: translate(50%, -50%) scale(0.92); }
+      100% { opacity: 0;   transform: translate(50%, -50%) scale(1.18); }
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 420px; gap: 64px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 13px; font-weight: 600; color: var(--text-1);
+      background: rgba(18,8,2,0.92); border: 1.5px solid rgba(255,85,0,0.55);
+      padding: 9px 20px; border-radius: 999px; margin-bottom: 28px;
+      box-shadow: 0 0 18px rgba(255,85,0,0.1), inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .hero-badge em { font-style: normal; color: var(--accent); }
+    .hero-badge .dot {
+      width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 8px var(--accent); animation: blink 2s ease-in-out infinite; flex-shrink: 0;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .hero h1 {
+      font-size: clamp(38px, 5.5vw, 68px); font-weight: 900;
+      line-height: 1.05; letter-spacing: -0.05em; margin-bottom: 24px;
+    }
+    .hero h1 .accent {
+      color: var(--accent);
+      text-shadow: 0 0 40px rgba(255,85,0,0.5), 0 0 80px rgba(255,85,0,0.2);
+    }
+    .hero h1 .line-dim { color: var(--text-2); }
+    /* LP-B: linha de reposicionamento em destaque */
+    .hero-reposition {
+      display: inline-block; margin-bottom: 24px;
+      font-size: 15px; color: var(--text-3); font-style: italic; line-height: 1.5;
+      border-left: 2px solid var(--accent); padding-left: 14px;
+    }
+    .hero-sub {
+      font-size: 18px; color: var(--text-2); line-height: 1.7;
+      max-width: 520px; margin-bottom: 40px;
+    }
+    .hero-sub strong { color: var(--text-1); }
+    /* proof inline no hero — LP-B especifico */
+    .hero-proof {
+      display: flex; gap: 0; flex-wrap: wrap;
+      border-top: 1px solid var(--border); margin-top: 40px; padding-top: 28px;
+    }
+    .hero-proof-item {
+      flex: 1; min-width: 120px; padding-right: 24px;
+    }
+    .hero-proof-item strong {
+      display: block; font-size: 30px; font-weight: 900;
+      color: var(--accent); letter-spacing: -0.04em;
+      line-height: 1;
+    }
+    .hero-proof-item span { font-size: 11px; color: var(--text-3); margin-top: 2px; display: block; }
+    .hero-proof-item .proof-brand { font-size: 10px; color: var(--text-3); font-style: italic; }
+
+    /* Form — Glassmorphism */
+    .hero-form {
+      position: relative; z-index: 2;
+      background: rgba(8,4,1,0.65);
+      backdrop-filter: blur(32px) saturate(160%);
+      -webkit-backdrop-filter: blur(32px) saturate(160%);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-top: 2px solid rgba(255,85,0,0.85);
+      border-radius: var(--radius-lg); padding: 40px 36px;
+      box-shadow:
+        0 8px 48px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(255,85,0,0.06),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .hero-form h3 { font-size: 26px; font-weight: 800; margin-bottom: 8px; color: #fff; }
+    .hero-form > p { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 28px; line-height: 1.6; }
+    .form-group   { margin-bottom: 16px; }
+    .form-group label {
+      display: block; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.6);
+      margin-bottom: 7px; letter-spacing: 0.03em;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; color: #fff; font-family: var(--font);
+      font-size: 15px; padding: 14px 18px; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .form-group input::placeholder { color: rgba(255,255,255,0.3); }
+    .form-group input:focus, .form-group select:focus {
+      border-color: rgba(255,85,0,0.6);
+      background: rgba(255,85,0,0.06);
+    }
+    .form-group select { appearance: none; cursor: pointer; color: rgba(255,255,255,0.7); }
+    .btn-primary {
+      width: 100%; background: var(--accent); color: #fff; font-family: var(--font);
+      font-size: 16px; font-weight: 700; padding: 18px; border: none;
+      border-radius: 12px; cursor: pointer; letter-spacing: 0.01em;
+      touch-action: manipulation; min-height: 54px;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s; margin-top: 4px;
+      box-shadow: 0 4px 24px rgba(255,85,0,0.3);
+    }
+    .btn-primary:hover {
+      background: #ff6a22; box-shadow: 0 8px 36px rgba(255,85,0,0.5); transform: translateY(-2px);
+    }
+    .form-note { font-size: 12px; color: rgba(255,255,255,0.3); text-align: center; margin-top: 14px; }
+    .form-note::before { content: '🔒 '; }
+
+    /* ─── PROOF BAR — logos reais ────────────────────────────────── */
+    .proof-bar {
+      background: var(--bg-1); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 40px 0;
+    }
+    .proof-bar-inner {
+      display: flex; align-items: center; justify-content: center; gap: 52px; flex-wrap: wrap;
+    }
+    .proof-label {
+      font-size: 11px; font-weight: 600; color: var(--text-3);
+      letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+    }
+    .proof-logos { display: flex; align-items: center; justify-content: center; gap: 52px; flex-wrap: wrap; }
+    .logo-item {
+      display: flex; align-items: center; justify-content: center; height: 36px;
+      opacity: 0.45; filter: grayscale(100%) brightness(1.8);
+      transition: opacity 0.3s, filter 0.3s;
+    }
+    .logo-item:hover { opacity: 1; filter: grayscale(0%) brightness(1); }
+    .logo-item img { max-height: 32px; max-width: 130px; object-fit: contain; }
+    .logo-item.on-white img { filter: invert(1) brightness(1.6); }
+    .logo-item.on-white:hover img { filter: none; }
+    .logo-text { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-1); }
+
+    /* ─── SQUAD — posição 3, acima dos cases (LP-B específico) ────── */
+    .squad-section { background: var(--bg-1); }
+    /* Intro: headline à esquerda + badge à direita */
+    .squad-intro {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 48px; margin-bottom: 52px;
+    }
+    .squad-intro-text { max-width: 560px; }
+    .squad-intro-text .tag { margin-bottom: 20px; }
+    .squad-intro-text h2 {
+      font-size: clamp(28px, 3.8vw, 44px); font-weight: 900;
+      line-height: 1.1; letter-spacing: -0.035em; margin-bottom: 16px;
+    }
+    .squad-intro-text h2 em { font-style: normal; color: var(--accent); }
+    .squad-intro-text p { font-size: 16px; color: var(--text-2); line-height: 1.7; }
+    .squad-badge {
+      flex-shrink: 0; background: var(--bg-2); border: 1px solid var(--border-hot);
+      border-radius: var(--radius-lg); padding: 24px 28px; text-align: center; min-width: 200px;
+    }
+    .squad-badge strong {
+      display: block; font-size: 13px; font-weight: 800; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+    }
+    .squad-badge span { font-size: 12px; color: var(--text-3); line-height: 1.5; display: block; }
+    /* Grid 5 colunas */
+    .squad-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+    .squad-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius-md); overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .squad-card:hover { border-color: var(--border-hot); transform: translateY(-4px); }
+    .squad-photo {
+      width: 100%; aspect-ratio: 1; background: var(--bg-3); overflow: hidden; position: relative;
+    }
+    .squad-photo img {
+      width: 100%; height: 100%; object-fit: cover; object-position: center top;
+      transition: transform 0.4s; filter: grayscale(15%);
+    }
+    .squad-card:hover .squad-photo img { transform: scale(1.05); filter: grayscale(0%); }
+    .squad-photo::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+      background: linear-gradient(to top, rgba(8,8,8,0.65) 0%, transparent 100%);
+      pointer-events: none;
+    }
+    .squad-info { padding: 16px 14px; }
+    .squad-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .squad-role { font-size: 11px; color: var(--accent); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+    .squad-bio  { font-size: 12px; color: var(--text-3); margin-top: 6px; line-height: 1.55; }
+
+    /* ─── PROBLEM ─────────────────────────────────────────────────── */
+    .problem { background: var(--bg-0); }
+    .problem-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;
+    }
+    .problem-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 28px 24px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .problem-card:hover { border-color: var(--border-hot); transform: translateY(-3px); }
+    .problem-icon { font-size: 22px; margin-bottom: 16px; }
+    .problem-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
+    .problem-card p  { font-size: 13px; color: var(--text-3); line-height: 1.6; }
+
+    /* ─── O QUE NOS DIFERENCIA (substitui "Para quem é isso") ──────── */
+    .differentiators { background: var(--bg-1); }
+    .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .diff-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 32px 28px;
+      position: relative; overflow: hidden; transition: border-color 0.2s;
+    }
+    .diff-card:hover { border-color: var(--border-hot); }
+    .diff-card::before {
+      content: attr(data-num);
+      position: absolute; top: -10px; right: 16px;
+      font-size: 80px; font-weight: 900; color: rgba(255,85,0,0.06);
+      line-height: 1; pointer-events: none;
+    }
+    .diff-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: var(--tag-bg); border: 1px solid var(--tag-border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 20px;
+    }
+    .diff-card h3 { font-size: 17px; font-weight: 700; margin-bottom: 10px; }
+    .diff-card p  { font-size: 13px; color: var(--text-3); line-height: 1.65; }
+    .diff-versus {
+      margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .diff-versus span {
+      font-size: 11px; color: var(--text-3); display: flex; gap: 8px; align-items: flex-start;
+    }
+    .diff-versus .no  { color: var(--text-3); }
+    .diff-versus .no::before  { content: '✗'; color: #555; flex-shrink: 0; }
+    .diff-versus .yes::before { content: '✓'; color: var(--accent); flex-shrink: 0; }
+    .diff-versus .yes { color: var(--text-2); }
+
+    /* ─── CASES — quote humana assinada (LP-B) ──────────────────────── */
+    .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .case-card {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: var(--radius-md); padding: 32px 28px;
+      transition: border-color 0.2s, transform 0.2s; position: relative; overflow: hidden;
+    }
+    .case-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), #ff8800); opacity: 0.15; transition: opacity 0.3s;
+    }
+    .case-card:hover { border-color: var(--border-hot); transform: translateY(-4px); box-shadow: 0 24px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,85,0,0.08); }
+    .case-card:hover::before { opacity: 1; }
+    .case-logo {
+      height: 38px; margin-bottom: 22px; display: flex; align-items: center;
+    }
+    .case-logo img {
+      max-height: 34px; max-width: 150px; object-fit: contain;
+      opacity: 0.55; filter: grayscale(100%) brightness(1.8); transition: opacity 0.2s, filter 0.2s;
+    }
+    .case-logo img:hover { opacity: 1; filter: none; }
+    .case-logo.on-white img { filter: invert(1) brightness(1.6) grayscale(100%); }
+    .case-logo.on-white img:hover { filter: invert(1) brightness(1.6) grayscale(0%); }
+    .case-logo-text { font-size: 16px; font-weight: 800; color: var(--text-2); letter-spacing: -0.02em; }
+    .case-segment {
+      font-size: 10px; font-weight: 700; color: var(--accent);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 18px;
+    }
+    /* LP-B: quote humana assinada */
+    .case-quote {
+      font-size: 14px; color: var(--text-2); line-height: 1.72; font-style: italic;
+      margin-bottom: 20px; border-left: 2px solid var(--accent); padding-left: 16px;
+    }
+    .case-author {
+      font-size: 12px; color: var(--text-3); margin-bottom: 22px; padding-left: 16px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .case-author::before { content: '—'; color: var(--accent); }
+    /* Um número em destaque por case */
+    .case-number {
+      display: inline-flex; align-items: baseline; gap: 8px;
+      background: var(--tag-bg); border: 1px solid var(--tag-border);
+      border-radius: var(--radius-sm); padding: 10px 16px;
+    }
+    .case-number strong {
+      font-size: 26px; font-weight: 900; color: var(--accent); letter-spacing: -0.03em;
+    }
+    .case-number span { font-size: 12px; color: var(--text-3); }
+
+    /* ─── TIMELINE (idêntico LP-A) ───────────────────────────────── */
+    .timeline-section { background: var(--bg-0); }
+    .timeline { position: relative; margin-top: 64px; }
+    .timeline::before {
+      content: ''; position: absolute; top: 32px; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), var(--accent), transparent);
+      opacity: 0.25;
+    }
+    .timeline-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; z-index: 1;
+    }
+    .timeline-item { padding: 0 12px; }
+    .timeline-dot {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--bg-2); border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: var(--accent);
+      margin-bottom: 20px; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .timeline-item:hover .timeline-dot { border-color: var(--accent); box-shadow: 0 0 24px rgba(255,85,0,0.3); }
+    .timeline-item.active .timeline-dot {
+      border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 0 32px rgba(255,85,0,0.4);
+    }
+    .timeline-week { font-size: 10px; font-weight: 700; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+    .timeline-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+    .timeline-desc  { font-size: 12px; color: var(--text-3); line-height: 1.6; }
+    .timeline-deliverables { margin-top: 12px; display: flex; flex-direction: column; gap: 4px; }
+    .timeline-deliverables span { font-size: 11px; color: var(--text-3); display: flex; gap: 6px; }
+    .timeline-deliverables span::before { content: '✓'; color: var(--accent); }
+    .timeline-row-2 { margin-top: 48px; }
+
+    /* ─── OBJECTIONS (idêntico LP-A) ─────────────────────────────── */
+    .objections-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .objection-card {
+      background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 28px 24px;
+    }
+    .objection-q { font-size: 15px; font-weight: 700; margin-bottom: 12px; display: flex; gap: 10px; }
+    .objection-q::before { content: '"'; color: var(--accent); font-size: 24px; line-height: 1; flex-shrink: 0; }
+    .objection-a { font-size: 13px; color: var(--text-2); line-height: 1.7; padding-left: 24px; border-left: 2px solid var(--bg-3); }
+
+    /* ─── CTA FINAL (idêntico LP-A) ──────────────────────────────── */
+    .cta-final {
+      background: linear-gradient(135deg, #1a0a00 0%, #0f0500 40%, #080808 100%);
+      border-top: 1px solid var(--border-hot); padding: 120px 0; position: relative; overflow: hidden;
+    }
+    .cta-final::before {
+      content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 1200px; height: 600px;
+      background: radial-gradient(ellipse, rgba(255,85,0,0.22) 0%, rgba(255,85,0,0.06) 45%, transparent 70%); pointer-events: none;
+    }
+    .cta-final::after {
+      content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 600px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,85,0,0.6), transparent);
+    }
+    .cta-inner { position: relative; z-index: 1; text-align: center; }
+    .cta-inner h2 {
+      font-size: clamp(30px, 4.5vw, 52px); font-weight: 900;
+      line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 20px;
+    }
+    .cta-inner h2 em { font-style: normal; color: var(--accent); }
+    .cta-inner p { font-size: 18px; color: var(--text-2); max-width: 580px; margin: 0 auto 40px; line-height: 1.65; }
+    .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-large {
+      background: var(--accent); color: #fff; font-family: var(--font);
+      font-size: 16px; font-weight: 700; padding: 18px 40px;
+      border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s;
+      letter-spacing: 0.01em; touch-action: manipulation; min-height: 54px;
+    }
+    .btn-large:hover { background: #ff6a22; box-shadow: 0 12px 40px rgba(255,85,0,0.45); transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--text-2); font-family: var(--font);
+      font-size: 16px; font-weight: 600; padding: 18px 40px;
+      border: 1.5px solid rgba(255,255,255,0.15); border-radius: 12px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: rgba(255,85,0,0.6); color: var(--accent); }
+    .cta-note { font-size: 12px; color: var(--text-3); margin-top: 20px; }
+    .cta-note span { color: var(--accent); }
+
+    /* ─── FOOTER ──────────────────────────────────────────────────── */
+    footer {
+      background: var(--bg-0);
+      border-top: 1px solid var(--border);
+      padding: 0; position: relative;
+    }
+    /* Linha laranja de topo — span completo do container */
+    .footer-accent-line {
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(255,85,0,0.7) 40%, rgba(255,85,0,0.7) 60%, transparent 100%);
+      margin-bottom: 0;
+    }
+    .footer-inner {
+      display: grid; grid-template-columns: 1fr auto; align-items: center;
+      gap: 32px; padding: 28px 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-brand {}
+    .footer-logo { font-size: 20px; font-weight: 900; letter-spacing: -0.04em; margin-bottom: 2px; }
+    .footer-logo span { color: var(--accent); }
+    .footer-tagline { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+    .footer-links {
+      display: flex; gap: 0; align-items: center; flex-wrap: wrap;
+    }
+    .footer-links a {
+      font-size: 12px; color: var(--text-3); transition: color 0.2s;
+      padding: 4px 16px; border-left: 1px solid var(--border);
+    }
+    .footer-links a:first-child { border-left: none; padding-left: 0; }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      padding: 16px 0; display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy p { font-size: 11px; color: var(--text-3); }
+    .divider { height: 1px; background: var(--border); margin: 0; border: none; }
+
+    /* ─── RESPONSIVE ──────────────────────────────────────────────── */
+
+    /* 900px: tablets landscape */
+    @media (max-width: 900px) {
+      .hero-inner       { grid-template-columns: 1fr; }
+      .squad-intro      { flex-direction: column; }
+      .squad-grid       { grid-template-columns: repeat(3, 1fr); }
+      .diff-grid        { grid-template-columns: 1fr; }
+      .cases-grid       { grid-template-columns: 1fr; }
+      .objections-grid  { grid-template-columns: 1fr; }
+      .timeline-grid    { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .timeline::before { display: none; }
+      .hero-pulse-ring  { display: none; } /* rings only on desktop */
+      .hero-protection  {
+        background: linear-gradient(180deg, rgba(8,8,8,0.5) 0%, rgba(8,8,8,0.72) 60%, rgba(8,8,8,0.9) 100%);
+      }
+    }
+
+    /* 700px: footer stack */
+    @media (max-width: 700px) {
+      .footer-inner { grid-template-columns: 1fr; gap: 16px; }
+      .footer-copy  { flex-direction: column; gap: 4px; text-align: center; }
+    }
+
+    /* 600px: phones */
+    @media (max-width: 600px) {
+      .section        { padding: 64px 0; }
+      .section-header { margin-bottom: 48px; }
+      .squad-grid     { grid-template-columns: repeat(2, 1fr); }
+      .hero-glow::before { width: 480px; height: 480px; right: -100px; }
+      .hero-glow::after  { width: 320px; height: 320px; }
+      .hero-proof { gap: 0; }
+      .hero-proof-item { min-width: 48%; padding-right: 12px; margin-bottom: 16px; }
+      .hero-proof-item strong { font-size: 26px; }
+      .proof-bar-inner { gap: 28px; }
+      .proof-logos { gap: 28px; }
+      .cta-buttons { flex-direction: column; align-items: stretch; }
+      .btn-large, .btn-outline {
+        width: 100%; justify-content: center; text-align: center;
+      }
+    }
+
+    /* 480px: small phones (iPhone SE, Galaxy A) */
+    @media (max-width: 480px) {
+      .container { padding: 0 16px; }
+      /* Nav */
+      .nav-cta { font-size: 11px; padding: 8px 14px; min-height: 40px; white-space: nowrap; }
+      .nav-cta::before { display: none; }
+      /* Hero */
+      .hero { padding-top: 68px; }
+      .hero-form { padding: 24px 18px; }
+      .hero-form h3 { font-size: 20px; }
+      .hero-form > p { font-size: 13px; margin-bottom: 20px; }
+      .form-group input, .form-group select { padding: 13px 14px; font-size: 14px; }
+      .btn-primary { padding: 16px; font-size: 15px; }
+      /* Section */
+      .section { padding: 52px 0; }
+      .section-header { margin-bottom: 36px; }
+      /* Timeline: 1 column on small phones */
+      .timeline-grid { grid-template-columns: 1fr; gap: 20px; }
+      .timeline-row-2 { margin-top: 20px; }
+      /* Squad: 2 col stays fine */
+      /* Proof bar */
+      .proof-bar { padding: 28px 0; }
+      .proof-bar-inner { flex-direction: column; gap: 20px; }
+      .proof-logos { gap: 20px; }
+    }
+
+    /* ─── BRAIN CANVAS ──────────────────────────────────────── */
+    #brain-canvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    /* ─── HERO PROTECTION GRADIENT ──────────────────────────── */
+    .hero-protection {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(90deg, rgba(8,8,8,0.82) 0%, rgba(8,8,8,0.45) 45%, rgba(8,8,8,0.05) 100%);
+    }
+
+    /* ─── SCROLL INDICATOR ───────────────────────────────────── */
+    .scroll-indicator {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0.4; animation: fadeDown 3s ease-in-out infinite;
+    }
+    .scroll-indicator span { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-3); }
+    .scroll-indicator svg { width: 18px; height: 18px; stroke: var(--text-3); fill: none; }
+    @keyframes fadeDown {
+      0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+      50%       { opacity: 0.7; transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── WHATSAPP FLUTUANTE ──────────────────────────────── */
+    .whatsapp-float {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      width: 58px; height: 58px; border-radius: 50%;
+      background: #25D366; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.6); }
+    .whatsapp-float svg { width: 30px; height: 30px; fill: white; }
+
+    .btn-whatsapp {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; margin-top: 12px; padding: 13px;
+      background: #25D366; color: white; border-radius: var(--radius-sm);
+      font-family: var(--font); font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: background 0.2s, transform 0.15s;
+      border: none; cursor: pointer;
+    }
+    .btn-whatsapp:hover { background: #1da851; transform: translateY(-1px); }
+
+    /* ─── FORM STATUS ─────────────────────────────────────── */
+    .form-success {
+      background: rgba(37,211,102,0.1); border: 1px solid rgba(37,211,102,0.3);
+      border-radius: var(--radius-sm); padding: 12px 16px;
+      font-size: 13px; color: #4ade80; text-align: center; margin-top: 12px;
+    }
+    .form-error {
+      background: rgba(255,85,0,0.1); border: 1px solid var(--border-hot);
+      border-radius: var(--radius-sm); padding: 12px 16px;
+      font-size: 13px; color: var(--accent); text-align: center; margin-top: 12px;
+    }
+
+    /* ─── ITALÍNIA LOGO ───────────────────────────────────── */
+    .logo-italinia {
+      font-size: 15px; font-weight: 800; letter-spacing: 0.06em;
+      color: var(--text-2); font-style: italic; opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="container nav-inner">
+      <a href="#" class="nav-logo">
+        <span class="nav-logo-mark">d</span>
+        <span class="nav-logo-text">omani<span>.</span>AI</span>
+      </a>
+      <a href="https://wa.me/5521996582121?text=Ol%C3%A1%2C%20vim%20pela%20LP%20e%20quero%20levar%20a%20Domani.AI%20para%20minha%20empresa." class="nav-cta" target="_blank" rel="noopener">
+        Escalar meu atendimento agora
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO — LP-B: copy de Squad ════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-glow">
+      <canvas id="brain-canvas"></canvas>
+    </div>
+    <div class="hero-grid"></div>
+    <div class="hero-pulse-ring"></div>
+    <!-- Gradiente de proteção — garante leitura do texto sobre o cérebro -->
+    <div class="hero-protection"></div>
+    <div class="container">
+      <div class="hero-inner">
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="dot"></span>
+            Bem-vindo à <em>ERA DA IA</em>
+          </div>
+
+          <!-- LP-B H1: dor de confiança (briefing Copy) -->
+          <h1>
+            Seu negócio não para de crescer.<br />
+            Sua operação de atendimento, sim.<br />
+            <span class="accent">Esse gap está sangrando receita.</span>
+          </h1>
+
+          <!-- Reposicionamento LP-B -->
+          <p class="hero-reposition">
+            A Domani.AI não entrega software. Entrega uma Célula de Inteligência
+            Comercial que opera, evolui e responde junto com a sua empresa.
+          </p>
+
+          <p class="hero-sub">
+            <strong>Squad dedicado.</strong> Produto, estratégia e operação integrados —
+            com governança real e compliance em cada conversa orquestrada.
+          </p>
+
+          <!-- Proof inline LP-B: cases nomeados no hero -->
+          <div class="hero-proof">
+            <div class="hero-proof-item">
+              <strong>8K+</strong>
+              <span>conversas/mês</span>
+              <span class="proof-brand">Brewteco</span>
+            </div>
+            <div class="hero-proof-item">
+              <strong>+210%</strong>
+              <span>agendamentos</span>
+              <span class="proof-brand">Porto Di Vino</span>
+            </div>
+            <div class="hero-proof-item">
+              <strong>+180%</strong>
+              <span>leads no pipeline</span>
+              <span class="proof-brand">Todeschini</span>
+            </div>
+            <div class="hero-proof-item">
+              <strong>14 dias</strong>
+              <span>primeiros resultados</span>
+              <span class="proof-brand">média dos cases</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="hero-form" id="analise">
+          <h3>Fale com a Domani</h3>
+          <p>Conte como podemos transformar sua operação. Retornamos em até 24h.</p>
+          <form id="contact-form">
+            <input type="hidden" name="_subject" value="Novo lead — Domani.AI LP" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
+            <div class="form-group">
+              <label>Seu nome</label>
+              <input type="text" id="field-nome" name="nome" placeholder="Como podemos te chamar?" autocomplete="name" required />
+            </div>
+            <div class="form-group">
+              <label>Telefone / WhatsApp</label>
+              <input type="tel" id="field-tel" name="telefone" placeholder="(21) 99999-9999" autocomplete="tel" inputmode="tel" required />
+            </div>
+            <div class="form-group">
+              <label>Nome da empresa</label>
+              <input type="text" id="field-empresa" name="empresa" placeholder="Qual empresa você representa?" autocomplete="organization" />
+            </div>
+            <button type="submit" id="form-submit-btn" class="btn-primary">Quero transformar minha operação →</button>
+            <div id="form-success" class="form-success" style="display:none">✅ Mensagem enviada! O Squad entra em contato em breve.</div>
+            <div id="form-error" class="form-error" style="display:none">❌ Erro ao enviar. <a href="https://wa.me/5521996582121?text=Ol%C3%A1!%20Vi%20a%20LP%20da%20Domani.AI%20e%20quero%20saber%20mais." target="_blank" style="color:var(--accent)">Tente pelo WhatsApp.</a></div>
+          </form>
+          <p class="form-note">Seus dados são tratados com total privacidade. Sem spam.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+  </section>
+
+  <!-- ═══ PROOF BAR — logos reais ════════════════════════════════ -->
+  <div class="proof-bar">
+    <div class="container proof-bar-inner">
+      <span class="proof-label">Mesma célula. Adaptada ao seu negócio.</span>
+      <div class="proof-logos">
+        <div class="logo-item on-dark">
+          <img src="/assets/logos/brewteco.png" alt="Brewteco" />
+        </div>
+        <div class="logo-item on-white">
+          <img src="/assets/logos/portodivino.png" alt="Porto Di Vino" />
+        </div>
+        <div class="logo-item on-white">
+          <img src="/assets/logos/todeschini.png" alt="Todeschini" />
+        </div>
+        <div class="logo-item">
+          <img src="/assets/logos/italinia.svg" alt="Italínia" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SQUAD — posição 3, antes dos cases (LP-B) ══════════════ -->
+  <section class="section squad-section">
+    <div class="container">
+      <div class="squad-intro">
+        <div class="squad-intro-text">
+          <span class="tag">Quem pensa junto com você</span>
+          <h2>Especialistas dedicados<br />ao <em>seu negócio.</em><br />Não ao software.</h2>
+          <p>Quando você contrata a Domani, não recebe uma licença. Recebe um squad que conhece sua operação, aprende com ela e evolui sem parar.</p>
+        </div>
+        <div class="squad-badge">
+          <strong>Produto + Squad</strong>
+          <span>Tecnologia com estratégia humana. Co-pilotagem contínua.</span>
+        </div>
+      </div>
+
+      <div class="squad-grid">
+        <div class="squad-card">
+          <div class="squad-photo">
+            <img src="/assets/team/rick.png" alt="Rick" />
+          </div>
+          <div class="squad-info">
+            <div class="squad-name">Rick</div>
+            <div class="squad-role">Estratégia</div>
+            <div class="squad-bio">Arquiteta a inteligência comercial. Diagnóstico, governança e visão de negócio.</div>
+          </div>
+        </div>
+        <div class="squad-card">
+          <div class="squad-photo">
+            <img src="/assets/team/raisa.png" alt="Raisa" />
+          </div>
+          <div class="squad-info">
+            <div class="squad-name">Raisa</div>
+            <div class="squad-role">CSM</div>
+            <div class="squad-bio">Garante que cada entrega gere resultado real. Sucesso do cliente e evolução contínua.</div>
+          </div>
+        </div>
+        <div class="squad-card">
+          <div class="squad-photo">
+            <img src="/assets/team/aline.png" alt="Aline" />
+          </div>
+          <div class="squad-info">
+            <div class="squad-name">Aline</div>
+            <div class="squad-role">Projetos</div>
+            <div class="squad-bio">Coordena as 8 semanas. Cada entregável no prazo, cada escopo sem desvio.</div>
+          </div>
+        </div>
+        <div class="squad-card">
+          <div class="squad-photo">
+            <img src="/assets/team/lucas.png" alt="Lucas" />
+          </div>
+          <div class="squad-info">
+            <div class="squad-name">Lucas</div>
+            <div class="squad-role">IA</div>
+            <div class="squad-bio">Engenheiro de modelos e agentes. Faz a IA pensar como a sua empresa.</div>
+          </div>
+        </div>
+        <div class="squad-card">
+          <div class="squad-photo">
+            <img src="/assets/team/vini.png" alt="Vini" />
+          </div>
+          <div class="squad-info">
+            <div class="squad-name">Vini</div>
+            <div class="squad-role">Dados & Ads</div>
+            <div class="squad-bio">Transforma dados de conversas em inteligência de performance e crescimento.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ═══ PROBLEM ════════════════════════════════════════════════ -->
+  <section class="section problem">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">O problema real</span>
+        <h2>Por que as outras soluções<br /><em>não funcionaram para você</em></h2>
+        <p>Não é falta de tecnologia. É falta de squad. Ferramentas não pensam. Não adaptam. Não evoluem com o seu negócio.</p>
+      </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="problem-icon">📦</div>
+          <h4>Entregaram software, sumiram</h4>
+          <p>Plataforma configurada, treinamento feito, reunião de encerramento. Depois, você sozinho com uma ferramenta que não sabe o que fazer.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🔄</div>
+          <h4>Sem governança, sem compliance</h4>
+          <p>Ninguém gerenciou a conta. A operação cresceu sem controle. O risco de bloqueio foi ignorado até se tornar um problema real.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">🧩</div>
+          <h4>Template genérico, marca genérica</h4>
+          <p>A IA respondia como robô. Os clientes perceberam. A conversão caiu e a culpa foi jogada na tecnologia — não na ausência de estratégia.</p>
+        </div>
+        <div class="problem-card">
+          <div class="problem-icon">📉</div>
+          <h4>Sem evolução após o go-live</h4>
+          <p>A ferramenta parou no dia da entrega. O negócio continuou evoluindo. A IA ficou para trás e a operação voltou ao ponto de partida.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ O QUE NOS DIFERENCIA (substitui "Para quem é isso") ════ -->
+  <section class="section differentiators">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">O que nos diferencia</span>
+        <h2>Três coisas que nenhuma<br /><em>ferramenta consegue entregar</em></h2>
+        <p>A diferença não está na tecnologia. Está no que vem junto com ela.</p>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card" data-num="01">
+          <div class="diff-icon">🧠</div>
+          <h3>Estratégia antes do código</h3>
+          <p>Antes de escrever uma linha de IA, mapeamos sua operação, suas personas e seus gargalos reais. A tecnologia é a última etapa.</p>
+          <div class="diff-versus">
+            <span class="no">Ferramenta: config genérica, adapte você mesmo</span>
+            <span class="yes">Domani.AI: diagnóstico → arquitetura → execução</span>
+          </div>
+        </div>
+        <div class="diff-card" data-num="02">
+          <div class="diff-icon">🛡️</div>
+          <h3>Governança desde o dia 1</h3>
+          <p>Infraestrutura homologada, compliance com políticas de plataforma e zero risco de bloqueio. Não é opcional — é parte do escopo padrão.</p>
+          <div class="diff-versus">
+            <span class="no">Ferramenta: sua responsabilidade gerenciar a conta</span>
+            <span class="yes">Domani.AI: governança incluída, auditável e documentada</span>
+          </div>
+        </div>
+        <div class="diff-card" data-num="03">
+          <div class="diff-icon">🔄</div>
+          <h3>Co-pilotagem contínua</h3>
+          <p>O squad não some após o go-live. Monitora, otimiza, expande. Cada interação alimenta a inteligência e a operação melhora sozinha.</p>
+          <div class="diff-versus">
+            <span class="no">Ferramenta: suporte por ticket, updates automáticos</span>
+            <span class="yes">Domani.AI: squad dedicado, evolução contínua, sem parar</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CASES — quote humana assinada (LP-B) ══════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Quem já usa</span>
+        <h2>Operações reais.<br /><em>Pessoas reais. Números reais.</em></h2>
+        <p>Não falamos em projeções. Falamos em resultados documentados de clientes que a Domani co-pilota.</p>
+      </div>
+      <div class="cases-grid">
+
+        <div class="case-card">
+          <div class="case-logo on-dark">
+            <img src="/assets/logos/brewteco.png" alt="Brewteco" />
+          </div>
+          <div class="case-segment">Food & Beverage · Operação de Alto Volume</div>
+          <blockquote class="case-quote">
+            "Antes a gente perdia pedido por falta de resposta. Hoje a operação nunca para, nunca erra e o time foca no que importa."
+          </blockquote>
+          <div class="case-author">Diretor de Operações, Brewteco</div>
+          <div class="case-number">
+            <strong>-42%</strong>
+            <span>de custo operacional desde o go-live</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-logo on-white">
+            <img src="/assets/logos/portodivino.png" alt="Porto Di Vino" />
+          </div>
+          <div class="case-segment">Gastronomia Premium · B2C de Alto Ticket</div>
+          <blockquote class="case-quote">
+            "A qualificação de clientes ficou consistente independente de quem está no turno. O Squad montou algo que funciona sem supervisão constante."
+          </blockquote>
+          <div class="case-author">Gerente Comercial, Porto Di Vino</div>
+          <div class="case-number">
+            <strong>+210%</strong>
+            <span>na taxa de agendamento de reservas</span>
+          </div>
+        </div>
+
+        <div class="case-card">
+          <div class="case-logo on-white">
+            <img src="/assets/logos/todeschini.png" alt="Todeschini" />
+          </div>
+          <div class="case-segment">Móveis Planejados · Venda Consultiva</div>
+          <blockquote class="case-quote">
+            "A jornada de venda foi completamente reorganizada. O lead chega ao vendedor já qualificado. A taxa de fechamento subiu sem contratar ninguém."
+          </blockquote>
+          <div class="case-author">Head Comercial, Todeschini</div>
+          <div class="case-number">
+            <strong>+180%</strong>
+            <span>em leads qualificados no pipeline</span>
+          </div>
+        </div>
+
+
+        <div class="case-card">
+          <div class="case-logo">
+            <img src="/assets/logos/italinia.svg" alt="Italínia" style="max-height:34px;max-width:150px;object-fit:contain;opacity:0.9;" />
+          </div>
+          <div class="case-segment">Casa & Decoração · Venda Consultiva Premium</div>
+          <blockquote class="case-quote">
+            "Nossa equipe passou a receber leads já aquecidos e informados. O ciclo de venda caiu pela metade e o time foca no fechamento."
+          </blockquote>
+          <div class="case-author">Diretora Comercial, Italínia</div>
+          <div class="case-number">
+            <strong>+165%</strong>
+            <span>em leads prontos para fechamento</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ TIMELINE 8 SEMANAS (idêntico LP-A) ════════════════════ -->
+  <section class="section timeline-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Jornada de 8 semanas</span>
+        <h2>Do diagnóstico ao <em>Go-Live</em><br />em 8 semanas exatas</h2>
+        <p>Cada semana tem entregável, responsável e critério de aceite. Sem prazo aberto, sem escopo vago.</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-grid">
+          <div class="timeline-item active">
+            <div class="timeline-dot">S1</div>
+            <div class="timeline-week">Semana 1 — Descoberta</div>
+            <div class="timeline-title">Diagnóstico & Arquitetura</div>
+            <div class="timeline-desc">Mapeamento completo da operação, personas e fluxos de orquestração.</div>
+            <div class="timeline-deliverables">
+              <span>Mapa de operação</span>
+              <span>Definição de personas</span>
+              <span>Arquitetura aprovada</span>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">S2</div>
+            <div class="timeline-week">Semana 2 — Descoberta</div>
+            <div class="timeline-title">Governança de Conta</div>
+            <div class="timeline-desc">Infraestrutura homologada, compliance e canais configurados com segurança.</div>
+            <div class="timeline-deliverables">
+              <span>Canais homologados</span>
+              <span>Compliance ativo</span>
+              <span>Zero risco de bloqueio</span>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">S3</div>
+            <div class="timeline-week">Semana 3 — Setup</div>
+            <div class="timeline-title">Integração & CRM</div>
+            <div class="timeline-desc">CRM integrado, pipeline de dados e automações base ativas.</div>
+            <div class="timeline-deliverables">
+              <span>CRM integrado</span>
+              <span>Pipeline de dados</span>
+              <span>Automações base</span>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">S4</div>
+            <div class="timeline-week">Semana 4 — Setup</div>
+            <div class="timeline-title">Treinamento do Agente</div>
+            <div class="timeline-desc">Personalidade de marca calibrada e primeiros fluxos implementados.</div>
+            <div class="timeline-deliverables">
+              <span>Personalidade calibrada</span>
+              <span>Base de conhecimento</span>
+              <span>Fluxos primários</span>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-grid timeline-row-2">
+          <div class="timeline-item">
+            <div class="timeline-dot">S5</div>
+            <div class="timeline-week">Semana 5 — Piloto</div>
+            <div class="timeline-title">Piloto Controlado</div>
+            <div class="timeline-desc">Operação real com volume reduzido e refinamento de fluxos.</div>
+            <div class="timeline-deliverables">
+              <span>Piloto ao vivo</span>
+              <span>Dados reais</span>
+              <span>Ajustes de fluxo</span>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">S6</div>
+            <div class="timeline-week">Semana 6 — Piloto</div>
+            <div class="timeline-title">Expansão Comercial</div>
+            <div class="timeline-desc">Qualificação, recuperação de leads e handoff para o time humano.</div>
+            <div class="timeline-deliverables">
+              <span>Fluxo de qualificação</span>
+              <span>Recuperação de leads</span>
+              <span>Playbook do time</span>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">S7</div>
+            <div class="timeline-week">Semana 7 — Go-Live</div>
+            <div class="timeline-title">Otimização & Dashboard</div>
+            <div class="timeline-desc">ROI documentado e painel de inteligência operacional ao vivo.</div>
+            <div class="timeline-deliverables">
+              <span>Dashboard ao vivo</span>
+              <span>Relatório de ROI</span>
+              <span>Benchmarks</span>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot">S8</div>
+            <div class="timeline-week">Semana 8 — Go-Live</div>
+            <div class="timeline-title">Operação Plena</div>
+            <div class="timeline-desc">Orquestração 24/7 autônoma com squad em co-pilotagem contínua.</div>
+            <div class="timeline-deliverables">
+              <span>Operação 24/7</span>
+              <span>Ciclo de evolução</span>
+              <span>Co-pilotagem ativa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ OBJECTIONS (idêntico LP-A) ════════════════════════════ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="tag">Perguntas frequentes</span>
+        <h2>Respostas diretas<br /><em>para dúvidas reais</em></h2>
+      </div>
+      <div class="objections-grid">
+        <div class="objection-card">
+          <div class="objection-q">Vai parecer robô para meu cliente?</div>
+          <div class="objection-a">A orquestração aprende com sua marca, seu tom e seus produtos. Seus clientes percebem agilidade e precisão — não um sistema impessoal. É o Squad que calibra isso, não um template.</div>
+        </div>
+        <div class="objection-card">
+          <div class="objection-q">Já tentei IA antes e não funcionou.</div>
+          <div class="objection-a">Você tentou uma ferramenta sem squad. A diferença é que nós diagnósticamos, arquitetamos, implementamos e co-pilotamos. Não entregamos software — entregamos operação funcionando.</div>
+        </div>
+        <div class="objection-card">
+          <div class="objection-q">E o risco de bloqueio no WhatsApp?</div>
+          <div class="objection-a">Governança e compliance são parte do escopo padrão, não adicional. Infraestrutura homologada, política de uso garantida. Nenhum cliente nosso foi bloqueado.</div>
+        </div>
+        <div class="objection-card">
+          <div class="objection-q">O Squad some depois do go-live?</div>
+          <div class="objection-a">Não. Co-pilotagem é contínua. Monitoramos, otimizamos e expandimos os fluxos. A operação evolui junto com o seu negócio — sem depender de você abrir ticket.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA FINAL ══════════════════════════════════════════════ -->
+  <section class="cta-final">
+    <div class="container cta-inner">
+      <span class="tag" style="margin-bottom:24px">Próximo passo</span>
+      <h2>
+        Chega de ferramenta.<br />
+        <em>É hora de ter um Squad.</em>
+      </h2>
+      <p>
+        O Squad mapeia sua operação atual, identifica os gargalos reais e mostra exatamente onde a orquestração de IA gera impacto. Diagnóstico gratuito.
+      </p>
+      <div class="cta-buttons">
+        <a href="https://wa.me/5521996582121?text=Ol%C3%A1!%20Vi%20a%20LP%20da%20Domani.AI%20e%20quero%20saber%20mais." class="btn-large" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;text-decoration:none">
+          <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Falar com o Squad no WhatsApp →
+        </a>
+        <a href="#analise" class="btn-outline" style="text-decoration:none;display:inline-flex;align-items:center">Preencher formulário</a>
+      </div>
+      <p class="cta-note">
+        Sem contrato de fidelidade · <span>Go-live em 8 semanas</span> · Governança incluída
+      </p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-accent-line"></div>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="footer-logo">domani<span>.</span>AI</div>
+          <p class="footer-tagline">Orquestração de Conversas · Célula de Inteligência Comercial</p>
+        </div>
+        <nav class="footer-links">
+          <a href="#analise">Falar com o Squad</a>
+          <a href="https://wa.me/5521996582121?text=Ol%C3%A1!%20Vi%20a%20LP%20da%20Domani.AI%20e%20quero%20saber%20mais." target="_blank" rel="noopener">WhatsApp</a>
+          <a href="mailto:rick@estudiooggi.com">rick@estudiooggi.com</a>
+          <a href="https://estudiodomaniai.com.br" target="_blank" rel="noopener">Site</a>
+        </nav>
+      </div>
+      <div class="footer-copy">
+        <p>© 2026 Domani.AI · Todos os direitos reservados</p>
+        <p>Desenvolvido por <strong style="color:var(--text-2)">Estúdio Oggi</strong></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ WHATSAPP FLUTUANTE ════════════════════════════════════ -->
+  <a href="https://wa.me/5521996582121?text=Ol%C3%A1!%20Vi%20a%20LP%20da%20Domani.AI%20e%20quero%20saber%20mais."
+     class="whatsapp-float" target="_blank" rel="noopener" title="Falar com o Squad no WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+  </a>
+
+  <script>
+    /* ─── BRAIN NEURAL NETWORK CANVAS ──────────────────────────── */
+    (function() {
+      var canvas = document.getElementById('brain-canvas');
+      if (!canvas) return;
+      var ctx = canvas.getContext('2d');
+      var nodes = [];
+      /* Reduce nodes on small viewports for performance */
+      var NODES    = window.innerWidth < 600 ? 55 : window.innerWidth < 900 ? 90 : 140;
+      var MAX_DIST = window.innerWidth < 600 ? 100 : 130;
+
+      function resize() {
+        canvas.width  = canvas.parentElement.offsetWidth  || window.innerWidth;
+        canvas.height = canvas.parentElement.offsetHeight || window.innerHeight;
+      }
+
+      function generateNodes(w, h) {
+        nodes = [];
+        var cx = w * 0.72;
+        var cy = h * 0.5;
+        var rx = Math.min(w * 0.26, 280);
+        var ry = h * 0.38;
+        for (var i = 0; i < NODES; i++) {
+          var angle = Math.random() * Math.PI * 2;
+          var r = Math.sqrt(Math.random());
+          var lobe = (Math.random() > 0.5 ? -1 : 1) * ry * 0.18 * Math.random();
+          nodes.push({
+            x:  cx + Math.cos(angle) * rx * r * (0.75 + Math.random() * 0.3),
+            y:  cy + Math.sin(angle) * ry * r * (0.75 + Math.random() * 0.3) + lobe,
+            vx: (Math.random() - 0.5) * 0.22,
+            vy: (Math.random() - 0.5) * 0.22,
+            pulse: Math.random(),
+            pulseSpeed: 0.002 + Math.random() * 0.005,
+            size: 1.6 + Math.random() * 2.8,
+            hot: Math.random() < 0.15   /* 15% são nós quentes (maiores, mais brilhantes) */
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        var cx = canvas.width  * 0.72;
+        var cy = canvas.height * 0.5;
+        var rx = Math.min(canvas.width * 0.26, 280);
+        var ry = canvas.height * 0.38;
+
+        // Update nodes
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.pulse += n.pulseSpeed;
+          if (n.pulse > 1) n.pulse = 0;
+          n.x += n.vx;
+          n.y += n.vy;
+          var dx = (n.x - cx) / rx;
+          var dy = (n.y - cy) / ry;
+          if (dx*dx + dy*dy > 1.15) { n.vx -= dx * 0.012; n.vy -= dy * 0.012; }
+          n.vx *= 0.992;
+          n.vy *= 0.992;
+        }
+
+        // Draw connections
+        for (var i = 0; i < nodes.length; i++) {
+          for (var j = i + 1; j < nodes.length; j++) {
+            var ddx = nodes[i].x - nodes[j].x;
+            var ddy = nodes[i].y - nodes[j].y;
+            var dist = Math.sqrt(ddx*ddx + ddy*ddy);
+            if (dist < MAX_DIST) {
+              var alphaConn = (1 - dist / MAX_DIST) * 0.42;
+              if (nodes[i].hot || nodes[j].hot) alphaConn *= 1.8;
+              ctx.beginPath();
+              ctx.strokeStyle = 'rgba(255,90,0,' + alphaConn + ')';
+              ctx.lineWidth = nodes[i].hot || nodes[j].hot ? 1.1 : 0.65;
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw nodes
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          var glow = 0.4 + 0.6 * Math.sin(n.pulse * Math.PI * 2);
+          var a    = 0.55 + 0.45 * glow;
+          var sz   = n.size * (0.8 + 0.45 * glow);
+          var halo = n.hot ? sz * 7 : sz * 4.5;
+          var grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, halo);
+          if (n.hot) {
+            grad.addColorStop(0, 'rgba(255,140,40,' + (a * 0.9) + ')');
+            grad.addColorStop(0.4, 'rgba(255,85,0,' + (a * 0.4) + ')');
+          } else {
+            grad.addColorStop(0, 'rgba(255,100,0,' + (a * 0.75) + ')');
+            grad.addColorStop(0.5, 'rgba(255,85,0,' + (a * 0.2) + ')');
+          }
+          grad.addColorStop(1, 'rgba(255,85,0,0)');
+          ctx.beginPath();
+          ctx.fillStyle = grad;
+          ctx.arc(n.x, n.y, halo, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.fillStyle = n.hot
+            ? 'rgba(255,200,100,' + a + ')'
+            : 'rgba(255,155,70,'  + a + ')';
+          ctx.arc(n.x, n.y, n.hot ? sz * 1.4 : sz, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      window.addEventListener('resize', function() {
+        NODES    = window.innerWidth < 600 ? 55 : window.innerWidth < 900 ? 90 : 140;
+        MAX_DIST = window.innerWidth < 600 ? 100 : 130;
+        resize();
+        generateNodes(canvas.width, canvas.height);
+      });
+
+      resize();
+      generateNodes(canvas.width, canvas.height);
+      draw();
+    })();
+
+    /* ─── FORM SUBMISSION → FormSubmit (email) + WhatsApp ────── */
+    (function() {
+      var form    = document.getElementById('contact-form');
+      var btn     = document.getElementById('form-submit-btn');
+      var success = document.getElementById('form-success');
+      var error   = document.getElementById('form-error');
+      if (!form) return;
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var nome    = (document.getElementById('field-nome').value    || '').trim();
+        var tel     = (document.getElementById('field-tel').value     || '').trim();
+        var empresa = (document.getElementById('field-empresa').value || '').trim();
+        if (!nome || !tel) return;
+
+        btn.textContent = 'Enviando...';
+        btn.disabled = true;
+
+        /* 1 — Envia e-mail via Formspree AJAX */
+        fetch('https://formspree.io/f/xoqgpjov', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            nome: nome,
+            telefone: tel,
+            empresa: empresa || '(não informado)'
+          })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          if (data.ok || data.success) {
+            success.style.display = 'block';
+            error.style.display   = 'none';
+            form.reset();
+          } else { throw new Error(); }
+        })
+        .catch(function() {
+          error.style.display   = 'block';
+          success.style.display = 'none';
+        })
+        .finally(function() {
+          btn.textContent = 'Quero transformar minha operação →';
+          btn.disabled = false;
+        });
+
+        /* 2 — Abre WhatsApp simultaneamente */
+        var msgParts = ['Olá! Meu nome é ' + nome + ' e meu contato é ' + tel + '.'];
+        if (empresa) msgParts.push('Empresa: ' + empresa + '.');
+        msgParts.push('Vim pela LP e quero levar a Domani.AI para minha empresa.');
+        window.open('https://wa.me/5521996582121?text=' + encodeURIComponent(msgParts.join(' ')), '_blank');
+      });
+    })();
+  </script>
+
+</body>
+</html>
