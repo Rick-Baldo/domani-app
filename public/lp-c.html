@@ -2,6 +2,13 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KW3J4BHQ');</script>
+  <!-- End Google Tag Manager -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Domani.AI — Um Squad que Pensa Junto com Você</title>
   <meta name="description" content="Você já tentou IA. Não funcionou porque era ferramenta, não Squad. A Domani.AI entrega uma Célula de Inteligência Comercial." />
@@ -720,18 +727,13 @@
     }
   </style>
 
-  <!-- ═══ GOOGLE ADS TRACKING ══════════════════════════════════════ -->
-  <!-- @GUTO: substitua AW-CONVERSION_ID pelo ID da conta Google Ads  -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-CONVERSION_ID"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'AW-CONVERSION_ID');
-  </script>
-  <!-- ════════════════════════════════════════════════════════════════ -->
+
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KW3J4BHQ"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <!-- NAV -->
   <nav>
@@ -1446,30 +1448,7 @@
     })();
   </script>
 
-  <script>
-
-    /* ─── GOOGLE ADS — Rastreio de Clique no WhatsApp ───────────────
-     * @GUTO: preencha AW-CONVERSION_ID e CONVERSION_LABEL
-     * Exemplo: send_to: 'AW-123456789/AbCdEfGhIjKlMnO'
-     * ──────────────────────────────────────────────────────────────── */
-    (function() {
-      function fireWaConversion() {
-        if (typeof gtag === 'function') {
-          gtag('event', 'conversion', {
-            'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL'
-          });
-        }
-      }
-      /* Rastreia todos os links wa.me ao DOMContentLoaded */
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
-          el.addEventListener('click', fireWaConversion);
-        });
-      });
-      /* Garante rastreio em links criados dinamicamente via JS (form submit) */
-      window.__domaniFireWaConversion = fireWaConversion;
-    })();
-  </script>
+  
 
 </body>
 </html>
