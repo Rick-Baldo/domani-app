@@ -124,7 +124,7 @@
     .hero {
       position: relative; min-height: 100vh;
       display: flex; align-items: center;
-      padding-top: 80px; overflow: hidden;
+      padding-top: 80px; padding-bottom: 120px; overflow: hidden;
     }
     .hero-glow { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
     /* Glow principal — núcleo brilhante direita */
@@ -233,6 +233,7 @@
       display: grid; grid-template-columns: repeat(4, 1fr);
       gap: 0;
       border-top: 1px solid var(--border); margin-top: 40px; padding-top: 28px;
+      padding-bottom: 12px;
     }
     .hero-proof-item {
       padding-right: 20px;
@@ -299,7 +300,7 @@
     /* ─── PROOF BAR — logos reais ────────────────────────────────── */
     .proof-bar {
       background: var(--bg-1); border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border); padding: 40px 0;
+      border-bottom: 1px solid var(--border); padding: 52px 0;
     }
     .proof-bar-inner {
       display: flex; align-items: center; justify-content: center; gap: 52px; flex-wrap: wrap;
@@ -668,7 +669,7 @@
 
     /* ─── SCROLL INDICATOR ───────────────────────────────────── */
     .scroll-indicator {
-      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 48px; left: 50%; transform: translateX(-50%);
       z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
       opacity: 0.4; animation: fadeDown 3s ease-in-out infinite;
     }
