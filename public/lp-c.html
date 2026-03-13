@@ -230,11 +230,12 @@
     .hero-sub strong { color: var(--text-1); }
     /* proof inline no hero — LP-B especifico */
     .hero-proof {
-      display: flex; gap: 0; flex-wrap: wrap;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0;
       border-top: 1px solid var(--border); margin-top: 40px; padding-top: 28px;
     }
     .hero-proof-item {
-      flex: 1; min-width: 120px; padding-right: 24px;
+      padding-right: 20px;
     }
     .hero-proof-item strong {
       display: block; font-size: 30px; font-weight: 900;
@@ -309,14 +310,15 @@
     }
     .proof-logos { display: flex; align-items: center; justify-content: center; gap: 52px; flex-wrap: wrap; }
     .logo-item {
-      display: flex; align-items: center; justify-content: center; height: 36px;
-      opacity: 0.45; filter: grayscale(100%) brightness(1.8);
+      display: flex; align-items: center; justify-content: center; height: 40px;
+      opacity: 0.55; filter: grayscale(100%) brightness(2.2);
       transition: opacity 0.3s, filter 0.3s;
     }
     .logo-item:hover { opacity: 1; filter: grayscale(0%) brightness(1); }
-    .logo-item img { max-height: 32px; max-width: 130px; object-fit: contain; }
-    .logo-item.on-white img { filter: invert(1) brightness(1.6); }
+    .logo-item img { max-height: 34px; max-width: 140px; object-fit: contain; }
+    .logo-item.on-white img { filter: invert(1) brightness(3); }
     .logo-item.on-white:hover img { filter: none; }
+    .logo-item.svg-logo img { filter: brightness(2) invert(0); }
     .logo-text { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-1); }
 
     /* ─── SQUAD — posição 3, acima dos cases (LP-B específico) ────── */
@@ -614,8 +616,8 @@
       .squad-grid     { grid-template-columns: repeat(2, 1fr); }
       .hero-glow::before { width: 480px; height: 480px; right: -100px; }
       .hero-glow::after  { width: 320px; height: 320px; }
-      .hero-proof { gap: 0; }
-      .hero-proof-item { min-width: 48%; padding-right: 12px; margin-bottom: 16px; }
+      .hero-proof { grid-template-columns: repeat(2, 1fr); gap: 16px 0; }
+      .hero-proof-item { padding-right: 12px; margin-bottom: 0; }
       .hero-proof-item strong { font-size: 26px; }
       .proof-bar-inner { gap: 28px; }
       .proof-logos { gap: 28px; }
@@ -824,7 +826,6 @@
 
     <!-- Scroll indicator -->
     <div class="scroll-indicator">
-      <span>Scroll</span>
       <svg viewBox="0 0 24 24" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
   </section>
@@ -843,7 +844,7 @@
         <div class="logo-item on-white">
           <img src="/assets/logos/todeschini.png" alt="Todeschini" />
         </div>
-        <div class="logo-item">
+        <div class="logo-item svg-logo">
           <img src="/assets/logos/italinia.svg" alt="Italínia" />
         </div>
       </div>
