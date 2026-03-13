@@ -716,6 +716,17 @@
       color: var(--text-2); font-style: italic; opacity: 0.7;
     }
   </style>
+
+  <!-- ═══ GOOGLE ADS TRACKING ══════════════════════════════════════ -->
+  <!-- @GUTO: substitua AW-CONVERSION_ID pelo ID da conta Google Ads  -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-CONVERSION_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-CONVERSION_ID');
+  </script>
+  <!-- ════════════════════════════════════════════════════════════════ -->
 </head>
 <body>
 
@@ -1430,6 +1441,31 @@
         msgParts.push('Vim pela LP e quero levar a Domani.AI para minha empresa.');
         window.open('https://wa.me/552131904210?text=Ol%C3%A1!%20Vi%20a%20LP%20da%20Domani.AI%20e%20quero%20saber%20mais.' + encodeURIComponent(msgParts.join(' ')), '_blank');
       });
+    })();
+  </script>
+
+  <script>
+
+    /* ─── GOOGLE ADS — Rastreio de Clique no WhatsApp ───────────────
+     * @GUTO: preencha AW-CONVERSION_ID e CONVERSION_LABEL
+     * Exemplo: send_to: 'AW-123456789/AbCdEfGhIjKlMnO'
+     * ──────────────────────────────────────────────────────────────── */
+    (function() {
+      function fireWaConversion() {
+        if (typeof gtag === 'function') {
+          gtag('event', 'conversion', {
+            'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL'
+          });
+        }
+      }
+      /* Rastreia todos os links wa.me ao DOMContentLoaded */
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('a[href*="wa.me"]').forEach(function(el) {
+          el.addEventListener('click', fireWaConversion);
+        });
+      });
+      /* Garante rastreio em links criados dinamicamente via JS (form submit) */
+      window.__domaniFireWaConversion = fireWaConversion;
     })();
   </script>
 
