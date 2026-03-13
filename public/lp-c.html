@@ -308,17 +308,18 @@
       font-size: 11px; font-weight: 600; color: var(--text-3);
       letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
     }
-    .proof-logos { display: flex; align-items: center; justify-content: center; gap: 52px; flex-wrap: wrap; }
+    .proof-logos { display: flex; align-items: center; justify-content: center; gap: 40px; flex-wrap: wrap; }
     .logo-item {
-      display: flex; align-items: center; justify-content: center; height: 40px;
-      opacity: 0.55; filter: grayscale(100%) brightness(2.2);
-      transition: opacity 0.3s, filter 0.3s;
+      display: flex; align-items: center; justify-content: center;
+      width: 140px; height: 44px;
+      opacity: 0.6; filter: grayscale(100%) brightness(2.5);
+      transition: opacity 0.3s, filter 0.3s; flex-shrink: 0;
     }
     .logo-item:hover { opacity: 1; filter: grayscale(0%) brightness(1); }
-    .logo-item img { max-height: 34px; max-width: 140px; object-fit: contain; }
+    .logo-item img { width: 100%; height: 100%; object-fit: contain; max-height: 44px; }
     .logo-item.on-white img { filter: invert(1) brightness(3); }
     .logo-item.on-white:hover img { filter: none; }
-    .logo-item.svg-logo img { filter: brightness(2) invert(0); }
+    .logo-item.svg-logo img { filter: brightness(2.5) invert(0); }
     .logo-text { font-size: 14px; font-weight: 800; letter-spacing: -0.02em; color: var(--text-1); }
 
     /* ─── SQUAD — posição 3, acima dos cases (LP-B específico) ────── */
